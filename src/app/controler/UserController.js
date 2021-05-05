@@ -54,6 +54,33 @@ class UserController {
     });
     
   }
+  async delete(req, res){ //função que apaga os usuarios
+
+
+    const usuarioExiste = await User.findOne({_id: req.params.id}); //procura um id no mongo
+
+    if(!usuarioExiste){ //caso não encontre o ID:
+      return res.status(400).json({
+        error: true,
+        code: 121,
+        message: "Erro: usuário não encontrado!"
+      })
+    }
+
+    const user = await User.deleteOne({_id: req.params.id}, (err) => {
+      if(err) return res.status(400).json({ //caso aconteça algum erro
+        erro:true,
+        code:122,
+        message: "Erro, usuário não foi apagado com sucesso!"
+      })
+    })
+
+    return res.json({ //caso de tudo certo
+      error: false,
+      message: "Usuário apagado com sucesso!"
+    })
+
+  }
 }
 
 export default new UserController();

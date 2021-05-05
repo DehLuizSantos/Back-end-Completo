@@ -6,11 +6,14 @@ import User from './app/models/User'; //conexão do mongo DB (com a pasta USER)
 import UserController from './app/controler/UserController';
 import LoginController from './app/controler/LoginController';
 
+import authMiddleware from './app/middlewares/auth';
+
 const routes = new Router();
 
 
 routes.post('/user', UserController.store);
-routes.post('/login', LoginController.store)
+routes.delete('/user/:id', authMiddleware, UserController.delete);
+routes.post('/login', LoginController.store);
 
 
 routes.get('/contatos',  (req, res)=>{
